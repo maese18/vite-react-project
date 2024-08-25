@@ -1,6 +1,6 @@
 // see https://www.youtube.com/watch?v=MxIPQZ64x0I
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Search from "./Search";
 import utils from "../../utils/utils";
 
@@ -16,15 +16,17 @@ const allUsers: Array<string> = [
 export default function UseCallback() {
   const [users, setUsers] = useState(allUsers);
 
-  const handleSearch = (text: string) => {
+
+  const handleSearch = useCallback((text: string) => {
+    console.log("handleSearch text=",text,'user[0]=',users[0])
     const filteredUsers = allUsers.filter((user) => user.includes(text));
     setUsers(filteredUsers);
-  };
+  },[users]);
 
   return (
     <div className="tutorial">
       <div className="align-center mb-2 flex">
-        <button onClick={() => setUsers(utils.shuffle(allUsers))}>
+        <button onClick={() => setUsers(utils.shuffle(users))}>
           Shuffle
         </button>
         <Search onChange={handleSearch}></Search>
